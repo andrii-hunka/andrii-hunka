@@ -1,0 +1,18 @@
+p {
+    margin:0;
+    transform: scaley(1.7);
+}
+span{
+    font-family: 'Source Sans Pro', sans-serif,helvetica,arial;
+    font-weight: bold;
+    font-size: 75px;
+}
+
+.bracket {
+    color:rgb(57, 194, 215);
+}
+
+.logo_text {
+    color:rgb(70, 69, 71);
+    font-size: 100px;
+}

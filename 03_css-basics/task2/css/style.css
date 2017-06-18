@@ -1,0 +1,108 @@
+body {
+    margin:0;
+}
+
+div img{
+    width:265px;
+    height: 250px;
+}
+h2 {
+    padding-left: 20px;
+    color:#39c2d7;
+    font-size: 30px;
+    margin: 5px;
+}
+p a {
+    color: #7f993a;
+    text-decoration: none;
+    margin: 20px;
+    font-weight: bold;
+    font-size: 18px;
+}
+p a:hover {
+    text-decoration: underline;
+}
+.country {
+    cursor: pointer;
+    width:265px;
+    height: 250px;
+    float:left;
+    margin:2.5%;
+    position: relative;
+    overflow: hidden;
+}
+.country_info {
+    text-transform: uppercase;
+    position: absolute;
+    bottom: 0;
+    display: block;
+    text-align: center;
+    width: 100%;
+    height: 50px;
+    background-color: black;
+    opacity: 0.8;
+    font-weight: bold;
+    color: white;
+    transition:height 0.5s;
+}
+.country:hover .country_info{
+    height: 280px;
+    transition:height 0.5s;        
+}
+.big_font {
+    margin: 20px 0 0 0;
+    font-size: 90px;
+}
+.info_section:not(:target) {  
+    position: relative; 
+    margin:0 2.5%;
+    background-color:#ececec; 
+    width:1260px;
+    overflow: hidden;
+    height: 0;
+    transition:height 0.5s;
+}
+.info_section:target {
+    position: relative;
+    margin:0 2.5%;
+    background-color:#ececec;
+    width:1260px;
+    height:320px;
+    overflow: hidden;
+    display: inline-block;
+    transition:height 0.5s;
+}
+.info_section article {
+    padding: 10px;
+}
+.close{
+    position: absolute;
+    top: 5px;
+    right: 7px;
+    text-decoration: none;
+    color: black;
+}
+.close:hover{
+    color:#469e9e;
+}
+.city-info {
+    display: inline-block;
+    padding: 30px;
+    margin-bottom: 60px;
+    border-right: 1px solid #d8cdcd;
+}
+.city-name {
+    margin: 10px 0;
+    font-size: 20px;
+    font-weight: bold;
+    background: url("../img/map-location-icon.png") no-repeat;
+    padding-left: 20px;
+}
+.text{
+    padding-left: 20px;
+    font-size: 18px;
+    line-height: 18px;
+    margin: 0;
+}
+
+
