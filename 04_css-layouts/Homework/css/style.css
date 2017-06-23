@@ -1,0 +1,305 @@
+body,nav ul,main,h2 {
+    margin: 0;
+}
+ @font-face { 
+     font-family:'Fugue'; src: url(../fonts/fugue_regular.woff); 
+}
+ @font-face { 
+     font-family:'Fugue Tails'; src: url(../fonts/fugue_tails.woff); 
+}
+ @font-face { 
+     font-family:'BauPro'; src: url(../fonts/BauPro.woff2); 
+}
+ @font-face { 
+     font-family:'BauProMedium'; src: url(../fonts/BauProMedium.woff2); 
+}
+.fugue-reg {
+    font-family: 'Fugue'; 
+}
+p {
+    margin: 10px;
+    font-family: 'BauPro';
+    font-size: 18px;
+    font-weight: 400;
+}
+body {
+    background-image: url("../img/hologram.jpg") ;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-size: cover;
+}
+header {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+}
+section {
+    margin-top: 30px;
+    margin-left: 53%;
+    display: flex;
+    flex-direction: column;
+}
+.logo {
+    position: absolute;
+    top: 0;
+    left: 0;
+    margin:55px 0 0 55px;
+    width:280px;
+}
+nav ul {
+    list-style: none;
+    display: flex;
+    justify-content: flex-end;
+}
+a {
+    display: inline-block;
+    color: black;
+    text-decoration: none;
+    font-size: 18px;
+    font-weight: 400;
+    line-height: 1.7em;
+    margin: 0 30px;
+    font-family: 'BauPro';
+}
+.questions a:hover,.footer-info a:hover,a:hover{
+    color:#70aabd;
+}
+nav {
+    padding: 30px 70px;
+    background-color: white;
+    width: 100%;
+}
+.toptxt {
+    height: 40px;
+    margin: 60px 50px;
+    padding-bottom: 70px;
+}
+main {
+    padding: 160px 70px 70px;
+    background-color: white;
+}
+.fugue{
+    font-family: 'Fugue Tails'; 
+}
+main h2 {
+    width: 65%;
+    margin-top: 100px;
+    margin-left: 70px;
+    font-size: 50px;
+    font-weight: 400;
+    position: relative;
+}
+.section-title {
+    margin: 10px;
+    font-family: 'BauProMedium';
+    font-size: 18px;
+    font-weight: 400;
+    line-height: 1.6em;
+}
+#arrow {
+    position: absolute;
+    top: 0;
+    left:-70px;
+    display: inline-block;
+    width: 70px;
+}
+.title {
+    margin-top: 0;
+    margin-left: 30px;
+    font-size: 50px;
+    font-weight: 400;
+    margin-bottom:140px;
+}
+.images1 {
+    display: grid;
+    grid-template:219px 310px 219px/200px calc((2/3)*460px) calc((1/3)*460px) 405px ;
+    }
+.images1 .img1 {
+    grid-area: 2/2/3/4;
+    width: 460px;
+    z-index: 2;
+}
+.images1 .img2 {
+    width: 560px;
+    z-index: 1;
+    grid-area: 1/3/4/5;
+}
+.images2 {
+    display: grid;
+    grid-template:120px 270px 350px/460px 344px 360px;
+}
+.images2 .img1 {
+    width: 460px;
+    grid-area:1/1/4/2;
+}
+.images2 .img2 {
+    width: 360px;
+    grid-area:2/3/3/4;
+}
+article:nth-child(2) {
+    position: relative;
+}
+.list {
+    margin: 100px 0 0 0;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+}
+.list article{
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.arrow_down{
+    margin-bottom: 30px;
+    transform: rotate(90deg);
+    width: 25px;
+}
+article h3 {
+    font-size: 40px;
+    font-weight: 400; 
+}
+.images3 {
+    margin:100px 0 0 70px;
+    display: grid;
+    grid-template:155px 260px 80px/660px 42px 260px;
+}
+.images3 .img1 {
+    width: 660px;   
+    grid-area:1/1/4/2;
+}
+.images3 .img2 {
+    width: 260px;
+    grid-area:2/3/3/4;
+}
+.images4 {
+    display: grid;
+    grid-template:145px 162px 155px/430px 420px 40px 220px;
+}
+.images4 .img1 {
+    width: 460px;   
+    grid-area:1/2/5/4;
+}
+.images4 .img2 {
+    width: 260px;
+    grid-area:2/3/3/5;
+}
+.more {
+    margin-top: 100px ;
+    display: flex;
+    justify-content: center;
+}
+.more a {
+    font-family: 'BauProMedium';
+    font-weight: 400;
+} 
+.about_section {
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    color: white;
+}
+.about_section h2 {
+    margin:200px 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.about_section h2 p{
+    margin: 0;
+    font-size: 48px;
+    font-weight: 400;
+    line-height: 1.3em;
+}
+.workers {
+    display: grid;
+    grid-gap:10px;
+    grid-template:repeat(4,1fr)/repeat(3,1fr);
+}
+.worker {
+    margin: 0 0 40px 0;
+    text-align: center;
+}
+.worker img {
+     width: 320px;
+}
+.name {
+    font-family: 'BauProMedium';
+    font-size: 18px;
+    font-weight: 400;
+    line-height: 1.6em
+}
+.companies {
+    grid-gap:30px 100px;
+    align-self: center;
+    display: grid;
+    grid-template:repeat(2,250px)/repeat(3,250px);
+}
+.companies img {
+    width: 250px;
+}
+.questions {
+    padding-top: 40px; 
+    width: 95%;
+    border-top:2px solid white;
+    align-self: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+}
+.social a {
+    margin: 20px;
+}
+.questions a{
+    font-size: 22px;
+    font-weight: 400;
+    color: white;
+    margin: 20px;
+    align-self: center;
+}
+.questions nav {
+    border-bottom:2px solid white;
+    width: 90%;
+    background-color: transparent;
+}
+.main  {
+    margin-right: auto;
+}
+footer {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+footer p {
+    font-size: 22px;
+    font-weight: 400;
+}
+.social {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+}
+.social svg {
+    fill: white;
+    margin: 0;
+    display: inline-block;
+    width:30px;
+    height: 30px;
+}
+.footer-info {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    width: 100%;
+}
+.footer-info a {
+    cursor: pointer;
+    color: white;
+}
+.copyright {
+    padding: 60px 0 50px 85px;
+    color: white;
+}
