@@ -1,0 +1,60 @@
+//variables
+$blue:   #2A74BF;
+$red:    #D7514C;
+$green:  #4D944B;
+$orange: #D8C11D;
+$grey:   #666;
+
+//bootstrap overriding styles
+.navbar-default .navbar-nav>li>a:hover {
+    background: $blue;
+    color: white;
+}
+.footer {
+    background: $grey;
+    padding: 10px;
+    color:white;
+    font-weight: bold;
+}
+.page-header {
+    color: $blue;
+    border-bottom: 1px solid $blue;
+}
+
+//base
+h1,h2 {
+    color: $blue;
+    font-weight: bold;
+}
+p {
+    margin: 0;
+}
+
+//related-classes styles
+.related-classes {
+    .related-classes-item {
+        margin-bottom: 15px;
+    }
+    .related-classes-first {
+        background: $red;
+        border: 1px solid $red;
+    }
+    .related-classes-second {
+        border: 1px solid $blue;
+        background: $blue;
+    }
+    .related-classes-third {
+        border: 1px solid $orange;
+        background: $orange;
+    }
+    .related-classes-forth {
+        border: 1px solid $green;
+        background: $green;
+    }
+    .related-classes-description {
+        text-align: center;
+        color: white;
+        font-weight: bold;
+        margin: 10px 0;
+    }
+}
