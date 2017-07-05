@@ -1,6 +1,12 @@
 .navbar-default .navbar-nav > li > a:hover {
   background: #2A74BF;
   color: white; }
+.navbar-default .navbar-nav > .active > a {
+  background: #2A74BF;
+  color: white; }
+.navbar-default .navbar-nav > .active > a:hover {
+  background: #2A74BF;
+  color: white; }
 
 .footer {
   background: #666;
