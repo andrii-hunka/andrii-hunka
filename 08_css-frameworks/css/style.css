@@ -4,19 +4,19 @@
 .navbar-default .navbar-nav > .active > a {
   background: #2A74BF;
   color: white; }
-.navbar-default .navbar-nav > .active > a:hover {
-  background: #2A74BF;
-  color: white; }
-
-.footer {
-  background: #666;
-  padding: 10px;
-  color: white;
-  font-weight: bold; }
+  .navbar-default .navbar-nav > .active > a:hover {
+    background: #2A74BF;
+    color: white; }
 
 .page-header {
   color: #2A74BF;
   border-bottom: 1px solid #2A74BF; }
+
+footer {
+  background: #666;
+  padding: 10px;
+  color: white;
+  font-weight: bold; }
 
 h1, h2 {
   color: #2A74BF;

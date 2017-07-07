@@ -14,17 +14,11 @@ $grey:   #666;
     &>.active>a {
         background: $blue;
         color: white;
-    }
-    &>.active>a:hover {
+        &:hover {
         background: $blue;
         color: white;
+        }
     }
-}
-.footer {
-    background: $grey;
-    padding: 10px;
-    color:white;
-    font-weight: bold;
 }
 .page-header {
     color: $blue;
@@ -32,6 +26,12 @@ $grey:   #666;
 }
 
 //base
+footer {
+    background: $grey;
+    padding: 10px;
+    color:white;
+    font-weight: bold;
+}
 h1,h2 {
     color: $blue;
     font-weight: bold;
