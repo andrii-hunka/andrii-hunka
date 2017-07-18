@@ -7,7 +7,7 @@ function guessingGame() {
         do {
             var randNumber = getRandomNumber(range);
             for (var numberOfTry = 1; numberOfTry <= 3 ; numberOfTry++){
-                var userNumber = getUserNumber();
+                var userNumber = getUserNumber(range);
                 if (isNaN(userNumber)) {
                     console.log("Введіть правильно дані");
                     continue;
@@ -27,7 +27,7 @@ function guessingGame() {
                     if (tryAgain()) {
                         break;
                     } else {
-                        return `Дякуємо за гру`;
+                        return "Дякуємо за гру";
                     }
                 }
             }
@@ -41,8 +41,8 @@ function guessingGame() {
 function getRandomNumber(range) {
     return parseInt((Math.random() * range).toFixed());
 }
-function getUserNumber() {
-    return parseInt(prompt("Введіть число"),10);
+function getUserNumber(range) {
+    return parseInt(prompt(`Введіть число від 0 до ${range}`),10);
 }
 function numberIsGuessed(randNumber, userNumber) {
     return randNumber === userNumber;
