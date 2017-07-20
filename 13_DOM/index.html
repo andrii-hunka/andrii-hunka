@@ -194,9 +194,9 @@ function findStudentByLastName(lastName) {
     });
     return student[0];
 }
-
 window.addEventListener('hashchange', function(){
     if(location.hash == ""){
+        clearStudentsList();
         clearStudentInfo();
         showLoader(true); 
         setTimeout(function(){
@@ -205,15 +205,19 @@ window.addEventListener('hashchange', function(){
         },2000);
     } else {
         clearStudentsList();
+        clearStudentInfo();
         showLoader(true);
         setTimeout(function() {
             var lastName = (location.hash).slice(1);
             var person =  findStudentByLastName(lastName);
-            renderStudentInfo(person);
+            if (typeof(person) === "object") {
+                renderStudentInfo(person);
+            } else {
+                location.href =  location.pathname;
+            }
             showLoader(false);
         },2000);
-    }
-        
+    } 
 });
 </script>
 </body>
