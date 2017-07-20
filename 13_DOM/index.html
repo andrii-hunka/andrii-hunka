@@ -192,10 +192,8 @@ function findStudentByLastName(lastName) {
             return person;
         }
     });
-    console.log(student.length);
     return student[0];
 }
-// renderStudents(students);
 
 window.addEventListener('hashchange', function(){
     if(location.hash == ""){
