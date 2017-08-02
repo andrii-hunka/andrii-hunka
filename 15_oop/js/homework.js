@@ -10,7 +10,7 @@ function Casino (numberOfSlotMachines, initialAmountOfMoney) {
             return sum + el.totalAmountOfMoney();
         },0);
         if(totalMoney < initialAmountOfMoney) {
-            _slotMachines[0].putMoney(initialAmountOfMoney - totalMoney); // putting rest of the money in 1st slotmachine
+            _slotMachines[0].putMoney(initialAmountOfMoney - totalMoney); // putting rest of the money in 1st slot machine
         }
         _slotMachines[_luckySlotMachineNumber].isLucky = true;
     })();
@@ -22,7 +22,7 @@ function Casino (numberOfSlotMachines, initialAmountOfMoney) {
         return casinoMoney;
     }
     this.getTotalNumberOfSlotMachines = function() {
-        console.log(`There are ${_slotMachines.length} slotmachines in a casino`)
+        console.log(`There are ${_slotMachines.length} slot machines in a casino`)
         return _slotMachines.length;
     }
     this.addNewSlotMachine = function() {
@@ -38,27 +38,31 @@ function Casino (numberOfSlotMachines, initialAmountOfMoney) {
         console.log(`New slot machine id:${newSlotMachine.id} has been added with initial amount of money $${newInitialAmountOfMoney}`);
     }
     this.removeSlotMachine = function (slotMachineId) {
+        var isDeleted = false;
         for(var i = 0; i < _slotMachines.length; i++) {
             if(_slotMachines[i].id === slotMachineId) {
                 var moneyFromDeletedSlotMachine = _slotMachines[i].takeMoney(_slotMachines[i].totalAmountOfMoney());
                 var isLucky = _slotMachines[i].isLucky;
                 _slotMachines.splice(i,1);
-                console.log(`Slot machine id:${slotMachineId} has been removed`);
+                console.log();
                 var totalPutMoney = _slotMachines.reduce(function (sum, el) {
                     el.putMoney(Math.floor(moneyFromDeletedSlotMachine/_slotMachines.length));
-                    return sum + Math.floor(moneyFromDeletedSlotMachine/_slotMachines.length); //adding money put in slotmachines
+                    return sum + Math.floor(moneyFromDeletedSlotMachine/_slotMachines.length); //adding money put in slot machines
                 },0);
                 if(totalPutMoney < moneyFromDeletedSlotMachine) {
-                    _slotMachines[0].putMoney(moneyFromDeletedSlotMachine - totalPutMoney); //putting the rest of money in 1st slotmachine
+                    _slotMachines[0].putMoney(moneyFromDeletedSlotMachine - totalPutMoney); //putting the rest of money in 1st slot machine
                 }
                 if(isLucky) {
                     var newLuckyMachine = getRandomNumber(_slotMachines.length);
                     _slotMachines[newLuckyMachine].isLucky = true;
                 }
-                break;
+                return `Slot machine id:${slotMachineId} has been removed`;
             }
         }
-        console.log(`There is no slotmachine with id:${slotMachineId}`);
+        if(!isDeleted) {
+            return `There is no slot machine with id:${slotMachineId}`;
+        }
+        
     }
     this.takeMoneyFromCasino = function(amountOfMoney) {
         if(!isProperValue(amountOfMoney)){
@@ -72,7 +76,7 @@ function Casino (numberOfSlotMachines, initialAmountOfMoney) {
             if (takenMoneyFromCasino === amountOfMoney) {
                 break;
             }
-            takenMoneyFromCasino += _slotMachines[i].takeMoney(amountOfMoney - takenMoneyFromCasino); //taking the rest of money from other slotmachine
+            takenMoneyFromCasino += _slotMachines[i].takeMoney(amountOfMoney - takenMoneyFromCasino); //taking the rest of money from other slot machine
         }
         if (takenMoneyFromCasino != amountOfMoney) {
             console.log (`There wasn't enough money in casino to take, so here is all of it - $${takenMoneyFromCasino}`);
@@ -189,6 +193,7 @@ function demo() {
     var slot = new SlotMachine(300000);
     //Casino test
     var secondMachineId = myCasino.getSlotMachineId(1);
+    console.log(`Second slot machine id is ${secondMachineId}`);
     console.log(myCasino.removeSlotMachine(secondMachineId));
     console.log(myCasino.removeSlotMachine(secondMachineId));
     console.log(myCasino.getTotalNumberOfSlotMachines());
@@ -203,7 +208,7 @@ function demo() {
     console.log(slot.play(20));
     console.log(slot.play(-30));
     console.log(slot.play(30000000));
-    console.log("$130 has been put in slotmachine\n" + slot.putMoney(130));
+    console.log("$130 has been put in slot machine\n" + slot.putMoney(130));
     console.log(`Total amount of money in slot machine - $${slot.totalAmountOfMoney()}`);
     console.log(`Money taken from slot machine - $${slot.takeMoney(100000)}`);
     console.log(`Total amount of money in slot machine - $${slot.totalAmountOfMoney()}`);
