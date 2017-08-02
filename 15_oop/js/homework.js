@@ -105,7 +105,7 @@ function Casino (numberOfSlotMachines, initialAmountOfMoney) {
 }
 
 function SlotMachine (initialAmountOfMoney) {  
-    var _totalAmountOfMoney = parseFloat(initialAmountOfMoney.toFixed(2));
+    var _totalAmountOfMoney = initialAmountOfMoney;
     this.isLucky = false;
     this.totalAmountOfMoney = function() {
         return _totalAmountOfMoney;
