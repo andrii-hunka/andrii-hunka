@@ -18,7 +18,7 @@ function Casino (numberOfSlotMachines, initialAmountOfMoney) {
         var casinoMoney = _slotMachines.reduce(function(sum, el) {
             return sum + el.totalAmountOfMoney(); 
         },0);
-        console.log(`The total amount of money is $${casinoMoney}`)
+        console.log(`The total amount of money in casino is $${casinoMoney}`)
         return casinoMoney;
     }
     this.getTotalNumberOfSlotMachines = function() {
