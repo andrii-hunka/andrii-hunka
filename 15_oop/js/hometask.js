@@ -193,6 +193,7 @@ function demo() {
     var slot = new SlotMachine(300000);
     //Casino test
     var secondMachineId = myCasino.getSlotMachineId(1);
+    console.log(myCasino.getTotalNumberOfSlotMachines());
     console.log(`Second slot machine id is ${secondMachineId}`);
     console.log(myCasino.removeSlotMachine(secondMachineId));
     console.log(myCasino.removeSlotMachine(secondMachineId));
@@ -214,4 +215,4 @@ function demo() {
     console.log(`Total amount of money in slot machine - $${slot.totalAmountOfMoney()}`);
     /////////////
 }
-demo();
+module.exports = demo;
