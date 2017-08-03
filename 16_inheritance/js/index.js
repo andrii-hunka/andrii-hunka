@@ -46,7 +46,7 @@ Character.prototype.setTotalHitpoints = function(totalHitpoints) {
     this.totalHitpoints = totalHitpoints;
 }
 Character.prototype.isAlive = function () {
-    return this.hitpoints > 0 ? true : false;
+    return this.getHitpoints() > 0 ? true : false;
 }
 
 
