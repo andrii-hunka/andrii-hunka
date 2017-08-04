@@ -188,7 +188,7 @@ function SlotMachine (initialAmountOfMoney) {
     }
 }
 
-function demo() {
+(function () {
     var myCasino = new Casino(10, 1000055);
     var slot = new SlotMachine(300000);
     //Casino test
@@ -214,5 +214,4 @@ function demo() {
     console.log(`Money taken from slot machine - $${slot.takeMoney(100000)}`);
     console.log(`Total amount of money in slot machine - $${slot.totalAmountOfMoney()}`);
     /////////////
-}
-module.exports = demo;
+})()
