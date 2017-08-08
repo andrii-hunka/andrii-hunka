@@ -48,6 +48,15 @@ Character.prototype.setTotalHitpoints = function(totalHitpoints) {
 Character.prototype.isAlive = function () {
     return this.getHitpoints() > 0 ? true : false;
 }
+Character.prototype.fight = function(character) {
+    if(character === this) {
+        return "Wrong target"   
+    }
+    if(!character.isAlive()) {
+        return "He's already dead";
+    }
+    character.setHitPoints(character.getHitpoints() - this.getAttack());  
+}
 
 
 var Champion = function(object) {
@@ -75,7 +84,7 @@ var Monster = function (object) {
     var _enraged = false;
     var _enrageDuration = 0;
     this.enrage = function () {
-        if (!(this.isEnraged())) {
+        if (!this.isEnraged()) {
             _enraged = true;
             this.setEnrageDuration(2);
             this.setAttack(this.getAttack() * 2);
@@ -85,7 +94,11 @@ var Monster = function (object) {
         return _enraged;
     }
     this.setEnrageDuration = function (turns) {
+        if (turns < 0) {
+            return "Wrong value";
+        }
         if(turns === 0) {
+            this.setAttack(this.getAttack() / 2);
             _enraged = false;
         }
         _enrageDuration = turns;
@@ -105,16 +118,22 @@ function inherit(Child, Parent) {
 inherit(Champion, Character);
 inherit(Monster, Character);
 Champion.prototype.fight = function(character) {
-    if(!(character.isAlive())) {
+    if(character === this) {
+        return "Wrong target"   
+    }
+    if(!character.isAlive()) {
         return "He's already dead";
     }
     character.setHitPoints(character.getHitpoints() - this.getAttack());
-    if (!(character.isAlive())) {
+    if (!character.isAlive()) {
         this.train();
     }
 }
 Monster.prototype.fight = function(character) {
-    if(!(character.isAlive())) {
+    if(character === this) {
+        return "Wrong target"   
+    }
+    if(!character.isAlive()) {
         return "He's already dead";
     }
     if (character.hasOwnProperty("isBlocked") && character.isBlocked()) {
@@ -122,14 +141,13 @@ Monster.prototype.fight = function(character) {
     } else {
         character.setHitPoints(character.getHitpoints() - this.getAttack());
     }
-    if (!(character.isAlive())) {
+    if (!character.isAlive()) {
         this.feast(character.getTotalHitPoints());
     }
     if (this.isEnraged()) {
         this.setEnrageDuration(this.getEnrageDuration() - 1);
     }
 } 
-
 module.exports = {
   Champion: Champion,
   Monster: Monster,
