@@ -1,3 +1,17 @@
 img {
-    width:100px;
+    width:200px;
+}
+form {
+    display: flex;
+    flex-direction: column;
+}
+form input {
+    width: 500px;
+    margin-bottom: 3px; 
+}
+form input[type="button"],form input[type="reset"] {
+    width: 100px;
+}
+form label {
+    margin-bottom: 10px; 
 }

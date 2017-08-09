@@ -106,7 +106,7 @@
         {
             name: 'Stepan',
             lastName: 'Prokopiak',
-            Img: 'https://cdn.pixabay.com/photo/2014/03/29/09/17/cat-300572_960_720.jpg',
+            img: 'https://cdn.pixabay.com/photo/2014/03/29/09/17/cat-300572_960_720.jpg',
             coverImg: 'https://static.pexels.com/photos/9135/sky-clouds-blue-horizon.jpg',
             email: 'sprokopyak96@gmail.com',
             skills: ['JavaScript', 'HTML', 'CSS']
@@ -161,59 +161,259 @@
         }
     ];
     let table = document.createElement("table");
-    table.classList.add('table');
-    let titles = ["Student","email","Profile picture","Skils","controls"];
+    let thead = document.createElement("thead");
+    let tbody = document.createElement("tbody");
+    table.classList.add("table","table-hover");
+    let titles = ["Student","Email","Profile picture","Skils","controls"];
     let tr = document.createElement("tr");
     titles.forEach(el => {
         let th = document.createElement("th");
         let text = document.createTextNode(el);
         th.appendChild(text);
         tr.appendChild(th);
+        thead.appendChild(tr);
     });
     table.appendChild(tr);
+    let rows = [];
     students.forEach(el => {
+        // let tr = document.createElement("tr");
+        let cells = [];
         let tr = document.createElement("tr");
         let student = document.createElement("td");
         let nameText = document.createTextNode(`${el.name} ${el.lastName}`);
         student.appendChild(nameText);
+        cells.push(student);
         let email = document.createElement("td");
         let emailText = document.createTextNode(el.email);
         email.appendChild(emailText);
-        let picture = document.createElement("img");
+        cells.push(email);
+        let picture = document.createElement("td");
+        let image = document.createElement("img");
+        image.classList.add("img-responsive")
         if (el.img === '') {
-            picture.setAttribute("src","https://www.neto.com.au/assets/images/default_product.gif");
+            image.setAttribute("src","https://www.neto.com.au/assets/images/default_product.gif");
         } else {
-            picture.setAttribute("src",el.img);
+            image.setAttribute("src",el.img);
         }
+        picture.appendChild(image);
+        cells.push(picture);
         let skills = document.createElement("td");
         let skillsText = document.createTextNode(el.skills);
         skills.appendChild(skillsText);
+        cells.push(skills);
+        let controls = document.createElement("td");
         let edit = document.createElement("button");
         let remove = document.createElement("button");
-        edit.classList.add('glyphicon', 'glyphicon-trash', 'edit'); 
-        remove.classList.add('glyphicon', 'glyphicon-edit', 'remove');
-        tr.appendChild(student);
-        tr.appendChild(email);
-        tr.appendChild(picture);
-        tr.appendChild(skills);
-        tr.appendChild(edit);
-        tr.appendChild(remove);
-        table.appendChild(tr);
+        edit.classList.add('glyphicon', 'glyphicon-edit', 'edit'); 
+        remove.classList.add('glyphicon', 'glyphicon-trash', 'remove');
+        controls.appendChild(edit);
+        controls.appendChild(remove);
+        cells.push(controls);
+        cells.forEach(cell => tr.appendChild(cell));
+        tbody.appendChild(tr);
+        table.appendChild(tbody);
     });
     let container = document.getElementById("container");
     container.appendChild(table);
-})();
-let showName = function(event) {
+
+    let form = document.createElement("form");
+    for(let i = 0 ; i < titles.length - 1 ; i++) {
+        if(i === 0) {
+            let firstName = document.createElement("input");
+            let firstNameLabel = document.createElement("label");
+            let lastName = document.createElement("input");
+            let lastNameLabel = document.createElement("label");
+            firstName.setAttribute("type", "text");
+            firstName.setAttribute("id", "firstName");
+            firstNameLabel.setAttribute("for", "firstName");
+            firstNameLabel.appendChild(document.createTextNode("First name"));
+            lastName.setAttribute("type", "text");
+            lastName.setAttribute("id", "lastName");
+            lastNameLabel.setAttribute("for", "lastName");
+            lastNameLabel.appendChild(document.createTextNode("Last name"));
+            form.appendChild(firstNameLabel);
+            form.appendChild(firstName);
+            form.appendChild(lastNameLabel);
+            form.appendChild(lastName);
+            continue;
+        }
+        let input = document.createElement("input");
+        let label = document.createElement("label");
+        input.setAttribute("type", "text");
+        input.setAttribute("id", titles[i]);
+        label.setAttribute("for", titles[i]);
+        label.appendChild(document.createTextNode(titles[i]));
+        form.appendChild(label);
+        form.appendChild(input);
+    }
+    let saveButton = document.createElement("input");
+    let cancelButton = document.createElement("input");
+    saveButton.setAttribute("type", "button");
+    cancelButton.setAttribute("type", "reset");
+    saveButton.setAttribute("value", "Save");
+    cancelButton.setAttribute("value", "Cancel");
+    saveButton.setAttribute("id", "save");
+    cancelButton.setAttribute("id", "cancel");
+    form.appendChild(saveButton);
+    form.appendChild(cancelButton);
+    container.insertBefore(form,table)
+
+
+    let showName = function(event) {
     let target = event.target;
+    if (target.tagName === "IMG") {
+        target = target.parentNode;
+    }
     target = target.parentNode;
-    if (target.firstChild.tagName !== "TH") {
-        alert(target.firstChild.innerHTML);
-    } 
+    alert(target.firstChild.innerHTML); 
 }
 let remove = function(event) {
-    let target = event.target;
-        event.stopPropagation();
-    console.log("remove");
+    let row = event.target.parentNode.parentNode;
+    let table = row.parentNode;
+    let name = row.firstChild.innerHTML.split(" ");
+    students.forEach( el => {
+        if(el.name === name[0] && el.lastName === name[1]) {
+            let removeIndex = students.indexOf(el);
+            students.splice(removeIndex,1)
+        }
+    });
+    table.removeChild(row);
+    
 }
-document.getElementById("container").addEventListener("click", remove);
-document.getElementById("container").addEventListener("click", showName);
+let edit = function(event) {
+    let cell = event.target.parentNode;
+    let formChilds = document.getElementsByTagName("form")[0].childNodes;
+    let info = [];
+    let cells = cell.parentNode.childNodes;
+    for (let i = 0 ; i < cells.length - 1 ; i++) {
+        if (i === 0) {
+            cells[i].innerHTML.split(" ").forEach( el => info.push(el));
+            continue;
+        }
+        if(cells[i].firstChild.tagName === "IMG") {
+            let img = cells[i].firstChild;
+            info.push(img.src);
+            continue
+        }
+        info.push(cells[i].innerHTML);
+    }
+    let infoPut = 0;
+    for (let i = 0; i < formChilds.length ; i++) {
+        if (formChilds[i].type === "text") {
+            formChilds[i].value = info[infoPut++];
+        }
+    }
+}
+let save = function() {
+    let formChilds = document.getElementsByTagName("form")[0].childNodes;
+    let info = [];
+    formChilds.forEach( el => {
+        if(el.type === "text") {
+            info.push(el.value);
+        }
+    });
+    // students.forEach( el => {
+    //     if(el.)
+    // });
+    console.log(info);
+}
+let action = function(event) {
+    let target = event.target;
+    switch (target.tagName) {
+        case "BUTTON" : 
+            if (Array.prototype.includes.call(target.classList, "remove")) {
+                remove(event);
+            }
+            if (Array.prototype.includes.call(target.classList, "edit")) {
+                edit(event);
+            }
+            break;
+        default :
+            showName(event);
+            break;
+    }
+}
+document.getElementsByTagName("tbody")[0].addEventListener("click", action);
+document.getElementById("save").addEventListener("click", save);
+})();
+            // name: 'Anton',
+            // lastName: 'Zhygalov',
+            // img: 'http://static.tvtropes.org/pmwiki/pub/images/Hello_Kitty_Pink_2981.jpg',
+            // coverImg: 'https://thumb1.shutterstock.com/display_pic_with_logo/156640/208511908/stock-photo-arad-romania-september-hello-kitty-pattern-printed-on-cardboard-box-studio-shot-208511908.jpg',
+            // email: 'antonzhygalov@gmail.com',
+            // skills: ['JavaScript', 'HTML', 'CSS']
+// let showName = function(event) {
+//     let target = event.target;
+//     if (target.tagName === "IMG") {
+//         target = target.parentNode;
+//     }
+//     target = target.parentNode;
+//     alert(target.firstChild.innerHTML); 
+// }
+// let remove = function(event) {
+//     let row = event.target.parentNode.parentNode;
+//     let table = row.parentNode;
+//     let name = row.firstChild.innerHTML.split(" ");
+//     students.forEach( el => {
+//         if(el.firstName === name[0] && el.lastName === name[1]) {
+//             let removeIndex = students.indexOf(el);
+//             students.splice(removeIndex,1)
+//         }
+//     });
+//     console.log(student);
+//     table.removeChild(row);
+    
+// }
+// let edit = function(event) {
+//     let cell = event.target.parentNode;
+//     let formChilds = document.getElementsByTagName("form")[0].childNodes;
+//     let info = [];
+//     let cells = cell.parentNode.childNodes;
+//     for (let i = 0 ; i < cells.length - 1 ; i++) {
+//         if (i === 0) {
+//             cells[i].innerHTML.split(" ").forEach( el => info.push(el));
+//             continue;
+//         }
+//         if(cells[i].firstChild.tagName === "IMG") {
+//             let img = cells[i].firstChild;
+//             info.push(img.src);
+//             continue
+//         }
+//         info.push(cells[i].innerHTML);
+//     }
+//     let infoPut = 0;
+//     for (let i = 0; i < formChilds.length ; i++) {
+//         if (formChilds[i].type === "text") {
+//             formChilds[i].value = info[infoPut++];
+//         }
+//     }
+// }
+// let save = function() {
+//     let formChilds = document.getElementsByTagName("form")[0].childNodes;
+//     let info = [];
+//     formChilds.forEach( el => {
+//         if(el.type === "text") {
+//             info.push(el.value);
+//         }
+//     })
+//     console.log(info);
+// }
+// let action = function(event) {
+//     let target = event.target;
+//     switch (target.tagName) {
+//         case "BUTTON" : 
+//             if (Array.prototype.includes.call(target.classList, "remove")) {
+//                 remove(event);
+//             }
+//             if (Array.prototype.includes.call(target.classList, "edit")) {
+//                 edit(event);
+//             }
+            
+//             break;
+//         default :
+//             showName(event);
+//             break;
+//     }
+// }
+// document.getElementsByTagName("tbody")[0].addEventListener("click", action);
+// document.getElementById("save").addEventListener("click", save);
