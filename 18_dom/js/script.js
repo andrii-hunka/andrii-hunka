@@ -176,7 +176,6 @@
     table.appendChild(tr);
     let rows = [];
     students.forEach(el => {
-        // let tr = document.createElement("tr");
         let cells = [];
         let tr = document.createElement("tr");
         let student = document.createElement("td");
@@ -217,7 +216,8 @@
     container.appendChild(table);
 
     let form = document.createElement("form");
-    for(let i = 0 ; i < titles.length - 1 ; i++) {
+    form.setAttribute("id", "editForm");
+    for(let i = 0 ; i < titles.length - 1 ; i++) {                  // creating form 
         if(i === 0) {
             let firstName = document.createElement("input");
             let firstNameLabel = document.createElement("label");
@@ -225,10 +225,12 @@
             let lastNameLabel = document.createElement("label");
             firstName.setAttribute("type", "text");
             firstName.setAttribute("id", "firstName");
+            firstName.setAttribute("required","");
             firstNameLabel.setAttribute("for", "firstName");
             firstNameLabel.appendChild(document.createTextNode("First name"));
             lastName.setAttribute("type", "text");
             lastName.setAttribute("id", "lastName");
+            lastName.setAttribute("required","");
             lastNameLabel.setAttribute("for", "lastName");
             lastNameLabel.appendChild(document.createTextNode("Last name"));
             form.appendChild(firstNameLabel);
@@ -243,12 +245,20 @@
         input.setAttribute("id", titles[i]);
         label.setAttribute("for", titles[i]);
         label.appendChild(document.createTextNode(titles[i]));
+        if (titles[i] === "Email") {
+            input.setAttribute("type", "email");
+            input.setAttribute("required","");
+        }
+        if (titles[i] === "Profile picture") {
+            input.setAttribute("type", "url");
+            input.setAttribute("required","");
+        }
         form.appendChild(label);
-        form.appendChild(input);
+        form.appendChild(input);     
     }
     let saveButton = document.createElement("input");
     let cancelButton = document.createElement("input");
-    saveButton.setAttribute("type", "button");
+    saveButton.setAttribute("type", "submit");
     cancelButton.setAttribute("type", "reset");
     saveButton.setAttribute("value", "Save");
     cancelButton.setAttribute("value", "Cancel");
@@ -260,160 +270,168 @@
 
 
     let showName = function(event) {
-    let target = event.target;
-    if (target.tagName === "IMG") {
+        let target = event.target;
+        if (target.tagName === "IMG") {
+            target = target.parentNode;
+        }
         target = target.parentNode;
+        alert(target.firstChild.innerHTML); 
     }
-    target = target.parentNode;
-    alert(target.firstChild.innerHTML); 
-}
-let remove = function(event) {
-    let row = event.target.parentNode.parentNode;
-    let table = row.parentNode;
-    let name = row.firstChild.innerHTML.split(" ");
-    students.forEach( el => {
-        if(el.name === name[0] && el.lastName === name[1]) {
-            let removeIndex = students.indexOf(el);
-            students.splice(removeIndex,1)
-        }
-    });
-    table.removeChild(row);
-    
-}
-let edit = function(event) {
-    let cell = event.target.parentNode;
-    let formChilds = document.getElementsByTagName("form")[0].childNodes;
-    let info = [];
-    let cells = cell.parentNode.childNodes;
-    for (let i = 0 ; i < cells.length - 1 ; i++) {
-        if (i === 0) {
-            cells[i].innerHTML.split(" ").forEach( el => info.push(el));
-            continue;
-        }
-        if(cells[i].firstChild.tagName === "IMG") {
-            let img = cells[i].firstChild;
-            info.push(img.src);
-            continue
-        }
-        info.push(cells[i].innerHTML);
-    }
-    let infoPut = 0;
-    for (let i = 0; i < formChilds.length ; i++) {
-        if (formChilds[i].type === "text") {
-            formChilds[i].value = info[infoPut++];
-        }
-    }
-}
-let save = function() {
-    let formChilds = document.getElementsByTagName("form")[0].childNodes;
-    let info = [];
-    formChilds.forEach( el => {
-        if(el.type === "text") {
-            info.push(el.value);
-        }
-    });
-    // students.forEach( el => {
-    //     if(el.)
-    // });
-    console.log(info);
-}
-let action = function(event) {
-    let target = event.target;
-    switch (target.tagName) {
-        case "BUTTON" : 
-            if (Array.prototype.includes.call(target.classList, "remove")) {
-                remove(event);
+
+
+    let remove = function(event) {
+        let row = event.target.parentNode.parentNode;
+        let table = row.parentNode;
+        let name = row.firstChild.innerHTML.split(" ");
+        students.forEach( el => {                                   // removing student from the students array
+            if(el.name === name[0] && el.lastName === name[1]) {
+                let removeIndex = students.indexOf(el);
+                students.splice(removeIndex,1)
             }
-            if (Array.prototype.includes.call(target.classList, "edit")) {
-                edit(event);
-            }
-            break;
-        default :
-            showName(event);
-            break;
+        });
+        table.removeChild(row);
+        
     }
-}
-document.getElementsByTagName("tbody")[0].addEventListener("click", action);
-document.getElementById("save").addEventListener("click", save);
-})();
-            // name: 'Anton',
-            // lastName: 'Zhygalov',
-            // img: 'http://static.tvtropes.org/pmwiki/pub/images/Hello_Kitty_Pink_2981.jpg',
-            // coverImg: 'https://thumb1.shutterstock.com/display_pic_with_logo/156640/208511908/stock-photo-arad-romania-september-hello-kitty-pattern-printed-on-cardboard-box-studio-shot-208511908.jpg',
-            // email: 'antonzhygalov@gmail.com',
-            // skills: ['JavaScript', 'HTML', 'CSS']
-// let showName = function(event) {
-//     let target = event.target;
-//     if (target.tagName === "IMG") {
-//         target = target.parentNode;
-//     }
-//     target = target.parentNode;
-//     alert(target.firstChild.innerHTML); 
-// }
-// let remove = function(event) {
-//     let row = event.target.parentNode.parentNode;
-//     let table = row.parentNode;
-//     let name = row.firstChild.innerHTML.split(" ");
-//     students.forEach( el => {
-//         if(el.firstName === name[0] && el.lastName === name[1]) {
-//             let removeIndex = students.indexOf(el);
-//             students.splice(removeIndex,1)
-//         }
-//     });
-//     console.log(student);
-//     table.removeChild(row);
-    
-// }
-// let edit = function(event) {
-//     let cell = event.target.parentNode;
-//     let formChilds = document.getElementsByTagName("form")[0].childNodes;
-//     let info = [];
-//     let cells = cell.parentNode.childNodes;
-//     for (let i = 0 ; i < cells.length - 1 ; i++) {
-//         if (i === 0) {
-//             cells[i].innerHTML.split(" ").forEach( el => info.push(el));
-//             continue;
-//         }
-//         if(cells[i].firstChild.tagName === "IMG") {
-//             let img = cells[i].firstChild;
-//             info.push(img.src);
-//             continue
-//         }
-//         info.push(cells[i].innerHTML);
-//     }
-//     let infoPut = 0;
-//     for (let i = 0; i < formChilds.length ; i++) {
-//         if (formChilds[i].type === "text") {
-//             formChilds[i].value = info[infoPut++];
-//         }
-//     }
-// }
-// let save = function() {
-//     let formChilds = document.getElementsByTagName("form")[0].childNodes;
-//     let info = [];
-//     formChilds.forEach( el => {
-//         if(el.type === "text") {
-//             info.push(el.value);
-//         }
-//     })
-//     console.log(info);
-// }
-// let action = function(event) {
-//     let target = event.target;
-//     switch (target.tagName) {
-//         case "BUTTON" : 
-//             if (Array.prototype.includes.call(target.classList, "remove")) {
-//                 remove(event);
-//             }
-//             if (Array.prototype.includes.call(target.classList, "edit")) {
-//                 edit(event);
-//             }
+
+    let editRow;
+    let edit = function(event) {
+        let cell = event.target.parentNode;
+        let formChilds = document.getElementsByTagName("form")[0].childNodes;
+        let info = [];
+        let cells = cell.parentNode.childNodes;
+        for (let i = 0 ; i < cells.length - 1 ; i++) {   //taking info from the target row
+            if (i === 0) {
+                cells[i].innerHTML.split(" ").forEach( el => info.push(el));
+                continue;
+            }
+            if(cells[i].firstChild.tagName === "IMG") {
+                let img = cells[i].firstChild;
+                info.push(img.src);
+                continue
+            }
+            info.push(cells[i].innerHTML);
+        }
+        let infoPut = 0;
+        for (let i = 0; i < formChilds.length ; i++) {  //puting info from target row into forms inputs
+            if (formChilds[i].type === "text" || formChilds[i].type === "email" || formChilds[i].type === "url") {
+                formChilds[i].value = info[infoPut++];
+            }
+        }
+        editRow = cell.parentNode;
+    }
+
+
+    let save = function() {
+        let form = document.getElementById("editForm");
+        let formChilds = form.childNodes;
+        let info = [];
+        formChilds.forEach( el => {     // taking info from form inputs
+            if(el.type === "text" || el.type === "email" || el.type === "url") {
+                info.push(el.value);
+            }
+
+        });
+        let isExist = false;
+        let editStudentIndex;
+        for (let i = 0 ; i < students.length ; i++) {
+            if(students[i].name === info[0] && students[i].lastName === info[1]) { //cheking if student name and last name already exist in students array
+                isExist = true;
+                editStudentIndex = i;  
+                break;
+            }
+        }
+        if (isExist) { 
+            let editCells = editRow.childNodes;
+            for(let i = 1 ; i < editCells.length - 1 ; i++) { //starting from the second cell, because student exist in students array
+                if(editCells[i].innerHTML !== info[i+1] && editCells[i].firstChild.tagName !== "IMG") {
+                    let newTd = document.createElement("td");
+                    let text = document.createTextNode(info[i+1]);
+                    newTd.appendChild(text);
+                    editRow.replaceChild(newTd,editCells[i]);
+                    continue;
+                }
+                if(editCells[i].firstChild.tagName === "IMG") {
+                    let newTd = document.createElement("td");
+                    let img = document.createElement("img");
+                    img.src = info[i+1];
+                    newTd.appendChild(img);
+                    editRow.replaceChild(newTd,editCells[i]);
+                }
+            }
+            // editing student in students array
+            let editObject = {};
+            editObject.name = info[0];
+            editObject.lastName = info[1];
+            editObject.email = info[2];
+            editObject.coverImg = info[3];
+            editObject.image = info[3];
+            editObject.skills = info[4].split(",").forEach(el => el.trim());
+            students.splice(editStudentIndex,1,editObject);
+            ////////////////////////////////////////
+        } else {
+            let studentName = info.slice(0,2).join(" ");
+            let tr = document.createElement("tr");
+            let cells = [];
+            for (let i = 0; i < titles.length - 1; i++) {   //creating cells student ... skills
+                if (i === 0) {
+                    let newTd = document.createElement("td");
+                    let text = document.createTextNode(studentName);
+                    newTd.appendChild(text);
+                    cells.push(newTd);
+                    continue;
+                }
+                if (i === 2) { // adding profile picture
+                    let newTd = document.createElement("td");
+                    let img = document.createElement("img");
+                    img.setAttribute("src",info[i+1]);
+                    newTd.appendChild(img);
+                    cells.push(newTd);
+                    continue;
+                }
+                let newTd = document.createElement("td");
+                let text = document.createTextNode(info[i+1]);
+                newTd.appendChild(text);
+                cells.push(newTd);
+            }
+            let controls = document.createElement("td");     //creating cell controls
+            let edit = document.createElement("button");
+            let remove = document.createElement("button");
+            edit.classList.add('glyphicon', 'glyphicon-edit', 'edit'); 
+            remove.classList.add('glyphicon', 'glyphicon-trash', 'remove');
+            controls.appendChild(edit);
+            controls.appendChild(remove);
+            cells.push(controls);
+            cells.forEach(el => tr.appendChild(el));
+            let table = document.getElementsByTagName("tbody")[0];
+            table.appendChild(tr);
             
-//             break;
-//         default :
-//             showName(event);
-//             break;
-//     }
-// }
-// document.getElementsByTagName("tbody")[0].addEventListener("click", action);
-// document.getElementById("save").addEventListener("click", save);
+        } 
+    }
+
+
+    let action = function(event) {
+        let target = event.target;
+        switch (target.tagName) {
+            case "BUTTON" : 
+                if ([].includes.call(target.classList, "remove")) {
+                    remove(event);
+                }
+                if ([].includes.call(target.classList, "edit")) {
+                    edit(event);
+                }
+                break;
+            default :
+                showName(event);
+                break;
+        }
+    }
+    
+
+    let validate = function(event) {
+        save();
+        form.reset();
+        event.preventDefault();
+    }
+    document.getElementsByTagName("tbody")[0].addEventListener("click", action);
+    document.getElementById("editForm").addEventListener("submit", validate);
+})();
