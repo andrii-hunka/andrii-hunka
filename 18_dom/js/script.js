@@ -160,116 +160,149 @@
             skills: ['JavaScript', 'HTML', 'CSS']
         }
     ];
+    
     let table = document.createElement("table");
     let thead = document.createElement("thead");
     let tbody = document.createElement("tbody");
     table.classList.add("table","table-hover");
-    let titles = ["Student","Email","Profile picture","Skils","controls"];
+    let titles = ["Student","Email","Profile picture","Skils","Controls"];
+    let studentsMap = [];
+    mapStudents();
     let tr = document.createElement("tr");
     titles.forEach(el => {
         let th = document.createElement("th");
         let text = document.createTextNode(el);
         th.appendChild(text);
+        if(el !== "Controls") {
+            let span = document.createElement("span");
+            span.classList.add("glyphicon", "glyphicon-sort");
+            th.appendChild(span);
+        }
         tr.appendChild(th);
         thead.appendChild(tr);
     });
-    table.appendChild(tr);
-    let rows = [];
-    students.forEach(el => {
-        let cells = [];
-        let tr = document.createElement("tr");
-        let student = document.createElement("td");
-        let nameText = document.createTextNode(`${el.name} ${el.lastName}`);
-        student.appendChild(nameText);
-        cells.push(student);
-        let email = document.createElement("td");
-        let emailText = document.createTextNode(el.email);
-        email.appendChild(emailText);
-        cells.push(email);
-        let picture = document.createElement("td");
-        let image = document.createElement("img");
-        image.classList.add("img-responsive")
-        if (el.img === '') {
-            image.setAttribute("src","https://www.neto.com.au/assets/images/default_product.gif");
-        } else {
-            image.setAttribute("src",el.img);
-        }
-        picture.appendChild(image);
-        cells.push(picture);
-        let skills = document.createElement("td");
-        let skillsText = document.createTextNode(el.skills);
-        skills.appendChild(skillsText);
-        cells.push(skills);
-        let controls = document.createElement("td");
-        let edit = document.createElement("button");
-        let remove = document.createElement("button");
-        edit.classList.add('glyphicon', 'glyphicon-edit', 'edit'); 
-        remove.classList.add('glyphicon', 'glyphicon-trash', 'remove');
-        controls.appendChild(edit);
-        controls.appendChild(remove);
-        cells.push(controls);
-        cells.forEach(cell => tr.appendChild(cell));
-        tbody.appendChild(tr);
-        table.appendChild(tbody);
-    });
+    table.appendChild(thead);
+    addRows(studentsMap);
+    table.appendChild(tbody);
     let container = document.getElementById("container");
     container.appendChild(table);
+    createForm();
+    let editRow; // needed for saving row that needs to be edited
 
-    let form = document.createElement("form");
-    form.setAttribute("id", "editForm");
-    for(let i = 0 ; i < titles.length - 1 ; i++) {                  // creating form 
-        if(i === 0) {
-            let firstName = document.createElement("input");
-            let firstNameLabel = document.createElement("label");
-            let lastName = document.createElement("input");
-            let lastNameLabel = document.createElement("label");
-            firstName.setAttribute("type", "text");
-            firstName.setAttribute("id", "firstName");
-            firstName.setAttribute("required","");
-            firstNameLabel.setAttribute("for", "firstName");
-            firstNameLabel.appendChild(document.createTextNode("First name"));
-            lastName.setAttribute("type", "text");
-            lastName.setAttribute("id", "lastName");
-            lastName.setAttribute("required","");
-            lastNameLabel.setAttribute("for", "lastName");
-            lastNameLabel.appendChild(document.createTextNode("Last name"));
-            form.appendChild(firstNameLabel);
-            form.appendChild(firstName);
-            form.appendChild(lastNameLabel);
-            form.appendChild(lastName);
-            continue;
-        }
-        let input = document.createElement("input");
-        let label = document.createElement("label");
-        input.setAttribute("type", "text");
-        input.setAttribute("id", titles[i]);
-        label.setAttribute("for", titles[i]);
-        label.appendChild(document.createTextNode(titles[i]));
-        if (titles[i] === "Email") {
-            input.setAttribute("type", "email");
-            input.setAttribute("required","");
-        }
-        if (titles[i] === "Profile picture") {
-            input.setAttribute("type", "url");
-            input.setAttribute("required","");
-        }
-        form.appendChild(label);
-        form.appendChild(input);     
+
+    function mapStudents () {
+        students.forEach(el => {
+            let studentObj = {};
+            studentObj.fullName = `${el.name} ${el.lastName}`;
+            studentObj.email = el.email;
+            studentObj.picture = el.img;
+            studentObj.skills = el.skills;
+            studentsMap.push(studentObj);
+        });
     }
-    let saveButton = document.createElement("input");
-    let cancelButton = document.createElement("input");
-    saveButton.setAttribute("type", "submit");
-    cancelButton.setAttribute("type", "reset");
-    saveButton.setAttribute("value", "Save");
-    cancelButton.setAttribute("value", "Cancel");
-    saveButton.setAttribute("id", "save");
-    cancelButton.setAttribute("id", "cancel");
-    form.appendChild(saveButton);
-    form.appendChild(cancelButton);
-    container.insertBefore(form,table)
-
-
-    let showName = function(event) {
+    function mappedStudent (arr) {
+        let studentObj = {};
+        studentObj.fullName = arr[0];
+        studentObj.email = arr[1];
+        studentObj.picture = arr[2];
+        studentObj.skills = arr[3];
+        return studentObj;
+    }
+    function deleteRows () {
+        let tbody = document.getElementsByTagName("tbody")[0];
+        let rows = tbody.childNodes;
+        tbody.removeChild(rows[1]);
+        for (let i = rows.length - 1 ; i >= 0 ; i--) {
+            tbody.removeChild(rows[i]);
+        }  
+    }
+    function addRows(arr) {
+        let elements = [];
+        if(!Array.isArray(arr)) {
+            elements.push(arr)
+        } else {
+            elements = arr;
+        }
+        elements.forEach(el => {
+            let tr = document.createElement("tr");
+            for (let prop in el) {
+                let td = document.createElement("td");
+                if (prop === "picture") {
+                    let picture = document.createElement("img");
+                    picture.src = el[prop];
+                    td.appendChild(picture);
+                } else {
+                    let text = document.createTextNode(el[prop]);
+                    td.appendChild(text);
+                }
+                tr.appendChild(td);
+            }
+            let controls = document.createElement("td");     //creating cell controls
+            let edit = document.createElement("button");
+            let remove = document.createElement("button");
+            edit.classList.add('glyphicon', 'glyphicon-edit', 'edit'); 
+            remove.classList.add('glyphicon', 'glyphicon-trash', 'remove');
+            controls.appendChild(edit);
+            controls.appendChild(remove);
+            tr.appendChild(controls);
+            tbody.appendChild(tr);
+        });
+    }
+    function createForm () {
+        let form = document.createElement("form");
+        form.setAttribute("id", "editForm");
+        for(let i = 0 ; i < titles.length - 1 ; i++) {                  
+            if(titles[i] === "Student") {
+                let firstName = document.createElement("input");
+                let firstNameLabel = document.createElement("label");
+                let lastName = document.createElement("input");
+                let lastNameLabel = document.createElement("label");
+                firstName.setAttribute("type", "text");
+                firstName.setAttribute("id", "firstName");
+                firstName.setAttribute("required","");
+                firstNameLabel.setAttribute("for", "firstName");
+                firstNameLabel.appendChild(document.createTextNode("First name"));
+                lastName.setAttribute("type", "text");
+                lastName.setAttribute("id", "lastName");
+                lastName.setAttribute("required","");
+                lastNameLabel.setAttribute("for", "lastName");
+                lastNameLabel.appendChild(document.createTextNode("Last name"));
+                form.appendChild(firstNameLabel);
+                form.appendChild(firstName);
+                form.appendChild(lastNameLabel);
+                form.appendChild(lastName);
+            } else {
+                let input = document.createElement("input");
+                let label = document.createElement("label");
+                input.setAttribute("type", "text");
+                input.setAttribute("id", titles[i]);
+                label.setAttribute("for", titles[i]);
+                label.appendChild(document.createTextNode(titles[i]));
+                if (titles[i] === "Email") {
+                    input.setAttribute("type", "email");
+                    input.setAttribute("required","");
+                }
+                if (titles[i] === "Profile picture") {
+                    input.setAttribute("type", "url");
+                    input.setAttribute("required","");
+                }
+                form.appendChild(label);
+                form.appendChild(input); 
+            }    
+        }
+        let saveButton = document.createElement("input");
+        let cancelButton = document.createElement("input");
+        saveButton.setAttribute("type", "submit");
+        cancelButton.setAttribute("type", "reset");
+        saveButton.setAttribute("value", "Save");
+        cancelButton.setAttribute("value", "Cancel");
+        saveButton.setAttribute("id", "save");
+        cancelButton.setAttribute("id", "cancel");
+        form.appendChild(saveButton);
+        form.appendChild(cancelButton);
+        container.insertBefore(form,table)
+    }
+    function showName(event) {
         let target = event.target;
         if (target.tagName === "IMG") {
             target = target.parentNode;
@@ -279,49 +312,47 @@
     }
 
 
-    let remove = function(event) {
+    function remove(event) {
         let row = event.target.parentNode.parentNode;
         let table = row.parentNode;
         let name = row.firstChild.innerHTML.split(" ");
         students.forEach( el => {                                   // removing student from the students array
             if(el.name === name[0] && el.lastName === name[1]) {
                 let removeIndex = students.indexOf(el);
-                students.splice(removeIndex,1)
+                students.splice(removeIndex,1);
+                studentsMap.splice(removeIndex,1);
             }
         });
-        table.removeChild(row);
-        
+        mapStudents(); //updating info to the studentsMap
+        table.removeChild(row);   
     }
 
-    let editRow;
-    let edit = function(event) {
+    function edit(event) {
         let cell = event.target.parentNode;
+        editRow = cell.parentNode;
         let formChilds = document.getElementsByTagName("form")[0].childNodes;
-        let info = [];
-        let cells = cell.parentNode.childNodes;
-        for (let i = 0 ; i < cells.length - 1 ; i++) {   //taking info from the target row
+        let cells = editRow.childNodes;
+        let inputs = [];
+        formChilds.forEach((el) => {
+            if(el.type === "text" || el.type === "email" || el.type === "url") {
+                inputs.push(el);
+            }
+        });
+        for (let i = 0 ; i < cells.length - 1 ; i++) {   //taking info from the target row and putting into form inputs
             if (i === 0) {
-                cells[i].innerHTML.split(" ").forEach( el => info.push(el));
+                [inputs[0].value, inputs[1].value] = cells[i].innerHTML.split(" ");// [input0, input1] = [name, lastName]
                 continue;
             }
             if(cells[i].firstChild.tagName === "IMG") {
-                let img = cells[i].firstChild;
-                info.push(img.src);
+                inputs[i+1].value = cells[i].firstChild.src;
                 continue
             }
-            info.push(cells[i].innerHTML);
+            inputs[i+1].value = cells[i].innerHTML;
         }
-        let infoPut = 0;
-        for (let i = 0; i < formChilds.length ; i++) {  //puting info from target row into forms inputs
-            if (formChilds[i].type === "text" || formChilds[i].type === "email" || formChilds[i].type === "url") {
-                formChilds[i].value = info[infoPut++];
-            }
-        }
-        editRow = cell.parentNode;
     }
 
 
-    let save = function() {
+    function save() {
         let form = document.getElementById("editForm");
         let formChilds = form.childNodes;
         let info = [];
@@ -340,83 +371,60 @@
                 break;
             }
         }
-        if (isExist) { 
+        let editObject = studentsObj(info);
+        info.splice(0,2,`${info[0]} ${info[1]}`);// making first element "name lastName"
+        let isEdited = false;
+        if (isExist) {
             let editCells = editRow.childNodes;
             for(let i = 1 ; i < editCells.length - 1 ; i++) { //starting from the second cell, because student exist in students array
-                if(editCells[i].innerHTML !== info[i+1] && editCells[i].firstChild.tagName !== "IMG") {
+                if(editCells[i].innerHTML !== info[i] && editCells[i].firstChild.tagName !== "IMG") {
                     let newTd = document.createElement("td");
-                    let text = document.createTextNode(info[i+1]);
+                    let text = document.createTextNode(info[i]);
                     newTd.appendChild(text);
                     editRow.replaceChild(newTd,editCells[i]);
-                    continue;
+                    isEdited = true;
                 }
-                if(editCells[i].firstChild.tagName === "IMG") {
+                if(editCells[i].firstChild.tagName === "IMG" && editCells[i].firstChild.src !== info[i]) { 
                     let newTd = document.createElement("td");
                     let img = document.createElement("img");
-                    img.src = info[i+1];
+                    img.src = info[i];
                     newTd.appendChild(img);
                     editRow.replaceChild(newTd,editCells[i]);
+                    isEdited = true;
                 }
             }
             // editing student in students array
-            let editObject = {};
-            editObject.name = info[0];
-            editObject.lastName = info[1];
-            editObject.email = info[2];
-            editObject.coverImg = info[3];
-            editObject.image = info[3];
-            editObject.skills = info[4].split(",").forEach(el => el.trim());
-            students.splice(editStudentIndex,1,editObject);
-            ////////////////////////////////////////
-        } else {
-            let studentName = info.slice(0,2).join(" ");
-            let tr = document.createElement("tr");
-            let cells = [];
-            for (let i = 0; i < titles.length - 1; i++) {   //creating cells student ... skills
-                if (i === 0) {
-                    let newTd = document.createElement("td");
-                    let text = document.createTextNode(studentName);
-                    newTd.appendChild(text);
-                    cells.push(newTd);
-                    continue;
-                }
-                if (i === 2) { // adding profile picture
-                    let newTd = document.createElement("td");
-                    let img = document.createElement("img");
-                    img.setAttribute("src",info[i+1]);
-                    newTd.appendChild(img);
-                    cells.push(newTd);
-                    continue;
-                }
-                let newTd = document.createElement("td");
-                let text = document.createTextNode(info[i+1]);
-                newTd.appendChild(text);
-                cells.push(newTd);
+            if(isEdited) {
+                studentsMap.splice(editStudentIndex,1,mappedStudent(info));
+                students.splice(editStudentIndex,1,editObject);
             }
-            let controls = document.createElement("td");     //creating cell controls
-            let edit = document.createElement("button");
-            let remove = document.createElement("button");
-            edit.classList.add('glyphicon', 'glyphicon-edit', 'edit'); 
-            remove.classList.add('glyphicon', 'glyphicon-trash', 'remove');
-            controls.appendChild(edit);
-            controls.appendChild(remove);
-            cells.push(controls);
-            cells.forEach(el => tr.appendChild(el));
-            let table = document.getElementsByTagName("tbody")[0];
-            table.appendChild(tr);
-            
-        } 
+        } else {
+            let newStudent = mappedStudent(info);
+            studentsMap.push(mappedStudent(info));
+            addRows(newStudent);   
+            students.push(editObject);
+        }
+    }
+    
+    function studentsObj(info) {
+        let editObject = {};
+        editObject.name = info[0];
+        editObject.lastName = info[1];
+        editObject.email = info[2];
+        editObject.coverImg = info[3];
+        editObject.image = info[3];
+        editObject.skills = info[4];
+        return editObject
     }
 
-
-    let action = function(event) {
+    function action(event) {
         let target = event.target;
         switch (target.tagName) {
             case "BUTTON" : 
-                if ([].includes.call(target.classList, "remove")) {
+                if (target.classList.contains("remove")) {
                     remove(event);
                 }
-                if ([].includes.call(target.classList, "edit")) {
+                if (target.classList.contains("edit")) {
                     edit(event);
                 }
                 break;
@@ -425,13 +433,86 @@
                 break;
         }
     }
-    
+    function sort(event) {
+        let target = event.target;
+        let span;
+        if (target.tagName === "SPAN") {
+            span = target;
+            target = target.parentNode;
+        } else {
+            span = target.lastChild;
+        }
+        if(event.target.innerHTML !== "Controls") {
+            let sortBy = target.innerHTML;
+            let cells = target.parentNode.childNodes;
+            let sortedColumn;
+            for (let i = 0; i < cells.length; i++) {
+                if (cells[i].innerHTML === sortBy) {
+                    sortedColumn = i;
+                    break;
+                }
+            }
+            let sortProp = Object.getOwnPropertyNames(studentsMap[0])[sortedColumn];
+            if(!target.classList.contains("sortedAZ")) {
+                sortAZ(sortProp);
+                target.classList.remove("sortedZA");
+                target.classList.add("sortedAZ");
+                span.classList.remove("glyphicon-sort");
+                span.classList.add("glyphicon-sort-by-alphabet");
+                 span.classList.remove("glyphicon-sort-by-alphabet-alt");
+            } else {
+                target.classList.remove("sortedAZ");
+                span.classList.add("glyphicon-sort-by-alphabet");
+                sortZA(sortProp);
+                target.classList.add("sortedZA");
+                span.classList.remove("glyphicon-sort-by-alphabet");
+                span.classList.add("glyphicon-sort-by-alphabet-alt");
+            }
+            clearSortedGlyphicons(sortedColumn);
+            deleteRows();
+            addRows(studentsMap)
+        }
+    }
 
-    let validate = function(event) {
-        save();
-        form.reset();
+    function clearSortedGlyphicons(sortedColumn) {
+        let cells = document.getElementsByTagName("th");
+        for (let i = 0; i < cells.length - 1; i++) {
+            if (i !== sortedColumn) {
+                cells[i].classList.remove("sortedZA","sortedAZ");
+                if(cells[i].lastChild.classList.contains("glyphicon-sort-by-alphabet")) {
+                    cells[i].lastChild.classList.remove("glyphicon-sort-by-alphabet");
+                }
+                if(cells[i].lastChild.classList.contains("glyphicon-sort-by-alphabet-alt")) {
+                    cells[i].lastChild.classList.remove("glyphicon-sort-by-alphabet-alt");
+                }
+                if(!cells[i].lastChild.classList.contains("glyphicon-sort")) {
+                    cells[i].lastChild.classList.toggle("glyphicon-sort");
+                }
+            }
+        }
+    }
+
+    function sortAZ(sortProp) {
+        studentsMap.sort((a,b) => {
+            if(a[sortProp] < b[sortProp]) {
+                return -1;
+            }
+            if(a[sortProp] > b[sortProp]) {
+                return 1;
+            }
+            return 0;
+        });
+    }
+    function sortZA(sortProp) {
+        studentsMap.reverse();
+    }
+    function validate(event) {
         event.preventDefault();
+        save();
+        event.target.reset();
     }
     document.getElementsByTagName("tbody")[0].addEventListener("click", action);
     document.getElementById("editForm").addEventListener("submit", validate);
+    document.getElementsByTagName("thead")[0].addEventListener("click", sort);
+    document.getElementsByTagName("thead")[0].addEventListener("click", event=>console.log(event));
 })();
