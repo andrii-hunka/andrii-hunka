@@ -311,20 +311,24 @@
         alert(target.firstChild.innerHTML); 
     }
 
-
     function remove(event) {
-        let row = event.target.parentNode.parentNode;
-        let table = row.parentNode;
+        let cell = event.target.parentNode;
+        let row = cell.parentNode;
+        let tbody = row.parentNode;
         let name = row.firstChild.innerHTML.split(" ");
         students.forEach( el => {                                   // removing student from the students array
             if(el.name === name[0] && el.lastName === name[1]) {
                 let removeIndex = students.indexOf(el);
                 students.splice(removeIndex,1);
-                studentsMap.splice(removeIndex,1);
+                
             }
         });
-        mapStudents(); //updating info to the studentsMap
-        table.removeChild(row);   
+        for (let i = 0; i < tbody.childNodes.length; i++) {
+            if (tbody.childNodes[i] === row ) {
+                studentsMap.splice(i,1);
+            }
+        }
+        tbody.removeChild(row);   
     }
 
     function edit(event) {
@@ -375,6 +379,15 @@
         info.splice(0,2,`${info[0]} ${info[1]}`);// making first element "name lastName"
         let isEdited = false;
         if (isExist) {
+            let editStudentMapIndex;
+            for (let i = 0 ; i < studentsMap.length ; i++) {
+                if(studentsMap[i].fullName === info[0]) { 
+                    editStudentMapIndex = i;  
+                    break;
+                }
+            }
+            let tbody = document.getElementsByTagName("tbody")[0];
+            let editRow = tbody.childNodes[editStudentMapIndex];
             let editCells = editRow.childNodes;
             for(let i = 1 ; i < editCells.length - 1 ; i++) { //starting from the second cell, because student exist in students array
                 if(editCells[i].innerHTML !== info[i] && editCells[i].firstChild.tagName !== "IMG") {
@@ -395,7 +408,7 @@
             }
             // editing student in students array
             if(isEdited) {
-                studentsMap.splice(editStudentIndex,1,mappedStudent(info));
+                studentsMap.splice(editStudentMapIndex,1,mappedStudent(info));
                 students.splice(editStudentIndex,1,editObject);
             }
         } else {
@@ -504,6 +517,7 @@
         });
     }
     function sortZA(sortProp) {
+        sortAZ(sortProp);
         studentsMap.reverse();
     }
     function validate(event) {
@@ -514,5 +528,5 @@
     document.getElementsByTagName("tbody")[0].addEventListener("click", action);
     document.getElementById("editForm").addEventListener("submit", validate);
     document.getElementsByTagName("thead")[0].addEventListener("click", sort);
-    document.getElementsByTagName("thead")[0].addEventListener("click", event=>console.log(event));
+    // document.getElementsByTagName("tbody")[0].addEventListener("click", event=>console.log(event.target.parentNode));
 })();
