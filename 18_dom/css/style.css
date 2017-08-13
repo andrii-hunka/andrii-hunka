@@ -17,8 +17,8 @@ form label {
 }
 th span {
     margin-left: 3px; 
-    visibility: hidden;
+    /*visibility: hidden;*/
 }
-th:hover span {
+/*th:hover span {
     visibility: visible;
-}
+}*/

@@ -173,7 +173,7 @@
         let th = document.createElement("th");
         let text = document.createTextNode(el);
         th.appendChild(text);
-        if(el !== "Controls") {
+        if(el !== "Controls" && el !== "Profile picture") {
             let span = document.createElement("span");
             span.classList.add("glyphicon", "glyphicon-sort");
             th.appendChild(span);
@@ -320,7 +320,6 @@
             if(el.name === name[0] && el.lastName === name[1]) {
                 let removeIndex = students.indexOf(el);
                 students.splice(removeIndex,1);
-                
             }
         });
         for (let i = 0; i < tbody.childNodes.length; i++) {
@@ -377,6 +376,8 @@
         }
         let editObject = studentsObj(info);
         info.splice(0,2,`${info[0]} ${info[1]}`);// making first element "name lastName"
+        info[info.length] = info[info.length - 1].split(","); // splitting skills string into an array
+        console.log(info);
         let isEdited = false;
         if (isExist) {
             let editStudentMapIndex;
@@ -455,7 +456,7 @@
         } else {
             span = target.lastChild;
         }
-        if(event.target.innerHTML !== "Controls") {
+        if(event.target.innerHTML !== "Controls" && event.target.innerHTML !== "Profile picture") {
             let sortBy = target.innerHTML;
             let cells = target.parentNode.childNodes;
             let sortedColumn;
@@ -492,15 +493,16 @@
         for (let i = 0; i < cells.length - 1; i++) {
             if (i !== sortedColumn) {
                 cells[i].classList.remove("sortedZA","sortedAZ");
-                if(cells[i].lastChild.classList.contains("glyphicon-sort-by-alphabet")) {
+                if(cells[i].lastChild.classList.contains("glyphicon-sort-by-alphabet") && cells[i].innerHTML !== "Profile picture") {
                     cells[i].lastChild.classList.remove("glyphicon-sort-by-alphabet");
                 }
-                if(cells[i].lastChild.classList.contains("glyphicon-sort-by-alphabet-alt")) {
+                if(cells[i].lastChild.classList.contains("glyphicon-sort-by-alphabet-alt") && cells[i].innerHTML !== "Profile picture") {
                     cells[i].lastChild.classList.remove("glyphicon-sort-by-alphabet-alt");
                 }
-                if(!cells[i].lastChild.classList.contains("glyphicon-sort")) {
+                if(!cells[i].lastChild.classList.contains("glyphicon-sort") && cells[i].innerHTML !== "Profile picture") {
                     cells[i].lastChild.classList.toggle("glyphicon-sort");
                 }
+                break;
             }
         }
     }
