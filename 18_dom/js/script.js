@@ -377,7 +377,6 @@
         let editObject = studentsObj(info);
         info.splice(0,2,`${info[0]} ${info[1]}`);// making first element "name lastName"
         info[info.length] = info[info.length - 1].split(","); // splitting skills string into an array
-        console.log(info);
         let isEdited = false;
         if (isExist) {
             let editStudentMapIndex;
@@ -392,18 +391,11 @@
             let editCells = editRow.childNodes;
             for(let i = 1 ; i < editCells.length - 1 ; i++) { //starting from the second cell, because student exist in students array
                 if(editCells[i].innerHTML !== info[i] && editCells[i].firstChild.tagName !== "IMG") {
-                    let newTd = document.createElement("td");
-                    let text = document.createTextNode(info[i]);
-                    newTd.appendChild(text);
-                    editRow.replaceChild(newTd,editCells[i]);
+                    editCells[i].innerHTML = info[i]
                     isEdited = true;
                 }
                 if(editCells[i].firstChild.tagName === "IMG" && editCells[i].firstChild.src !== info[i]) { 
-                    let newTd = document.createElement("td");
-                    let img = document.createElement("img");
                     img.src = info[i];
-                    newTd.appendChild(img);
-                    editRow.replaceChild(newTd,editCells[i]);
                     isEdited = true;
                 }
             }
@@ -496,6 +488,10 @@
 
     function sortAZ(sortProp) {
         studentsMap.sort((a,b) => {
+            if (Array.isArray(a)) {
+                a.join(",");
+                b.join(",");
+            }
             if(a[sortProp] < b[sortProp]) {
                 return -1;
             }
