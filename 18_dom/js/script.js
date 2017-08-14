@@ -517,5 +517,4 @@
     document.getElementsByTagName("tbody")[0].addEventListener("click", action);
     document.getElementById("editForm").addEventListener("submit", validate);
     document.getElementsByTagName("thead")[0].addEventListener("click", sort);
-    // document.getElementsByTagName("tbody")[0].addEventListener("click", event=>console.log(event.target.parentNode));
 })();
