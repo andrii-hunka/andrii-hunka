@@ -1,0 +1,55 @@
+body {
+    color: white;
+}
+button {
+    border-radius: 5px;
+    background: teal;
+    color: white;
+    border: 1px solid black;
+    width: 70px;
+    margin: 3px;
+}
+.app {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+#weather {
+    width: 100%;
+    height: 200px;
+    visibility: hidden;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+#previous {
+    visibility: hidden;
+}
+#wrapper {
+    position: relative;
+    background: url("http://s3.thingpic.com/images/TF/6Dx8uAWizGr4ZK9tGB4BVP5K.jpeg");
+    background-size : cover; 
+    width : 60%;
+    margin: 0 auto; 
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+#loader {
+    position: absolute;
+    top:0;
+    left: 48%;
+    margin-top: 100px; 
+    border: 4px solid #f3f3f3; /* Light grey */
+    border-top: 4px solid #3498db; /* Blue */
+    border-radius: 50%;
+    width: 25px;
+    height: 25px;
+    animation: spin 2s linear infinite;
+    /*visibility: hidden;*/
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}

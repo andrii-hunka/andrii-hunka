@@ -8,6 +8,9 @@ routes.use(bodyParser.urlencoded({ extended: true }));
 
 routes.post('/', function (req, res) {
   	let user = req.body;
+	if (user === {}) {
+		res.status(400).send();
+	}
   	fs.readFile(storage,'utf8',(err,result) => {
     	try {
 			let users = JSON.parse(result);
