@@ -1,33 +1,25 @@
 $(document).ready(function() {
-    // let numbers = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15];
-    let numbers = [1,2,3,4,5,6,7,8,9,10,12,15,13,14,11];
+    let numbers = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15];
     let seconds = 0;
     let minutes = 0;
     let steps = 0;
     let index;
     let timer = new Timer(startTimer,1000);
-    // numbers.sort(function(a, b){return 0.5 - Math.random()});
+    numbers.sort(function(a, b){return 0.5 - Math.random()});
     numbers.forEach(number => {
         $('#playField').append($("<div>").addClass("tile").text(number));
     });
     $('#playField').append($("<div>").addClass("empty"));
-    function isNearEmpty(el) {
-        let tiles = $('#playField').children().each((i,element) => {
-            if(el === element) {
-                index = i;
-            }
-        });
-        if($(tiles[index - 1]).hasClass("empty") || $(tiles[index + 1]).hasClass("empty") || $(tiles[index + 4]).hasClass("empty") || $(tiles[index - 4]).hasClass("empty")) {
-            return true;
-        }
-        return false;
-    }
     $("#playField").click( event => {
         if(isWin()) {
             return;
         }
         let target = event.target;
         if(isNearEmpty(target)) {
+            $(target).css({
+                border:"1px solid blue",
+                boxShadow:"0 0 10px blue"
+            });
             $('#numberOfSteps').text(++steps);
             $(target).animate({
                 left: $('.empty:eq(0)').offset().left - $(target).offset().left,
@@ -68,6 +60,17 @@ $(document).ready(function() {
         $('#playField').append($("<div>").addClass("empty"));
         alert("you won");
     });
+    function isNearEmpty(el) {
+        let tiles = $('#playField').children().each((i,element) => {
+            if(el === element) {
+                index = i;
+            }
+        });
+        if($(tiles[index - 1]).hasClass("empty") || $(tiles[index + 1]).hasClass("empty") || $(tiles[index + 4]).hasClass("empty") || $(tiles[index - 4]).hasClass("empty")) {
+            return true;
+        }
+        return false;
+    }
     function isWin() {
         let tiles = $('#playField').children();
         for(let i = 0; i < tiles.length - 1 ; i++) {
@@ -88,7 +91,6 @@ $(document).ready(function() {
             }
             return this;
         }
-        // start timer using current settings (if it's not already running)
         this.start = function() {
             if (!timerObj) {
                 this.stop();
@@ -96,9 +98,7 @@ $(document).ready(function() {
             }
             return this;
         }
-        // start with new interval, stop current interval
         this.reset = function(newT) {
-            
             t = newT;
             return this.stop().start();
         }
